@@ -1,5 +1,5 @@
 <x-layout title="Lista das series">
-    <h1>Primeira view</h1>
+    <a href="/series/create">Adicionar nova serie</a>
     <div>
         @foreach ($series as $serie)
             <ul>

@@ -27,7 +27,7 @@ class SerieController extends Controller
      */
     public function create()
     {
-        //
+        return view('series.create');
     }
 
     /**
