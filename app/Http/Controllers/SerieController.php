@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Echo_;
 
 class SerieController extends Controller
 {
@@ -11,7 +12,14 @@ class SerieController extends Controller
      */
     public function index(Request $request)
     {
-        dd($request);
+        $series = [
+            'Loki',
+            "House",
+            "Punish"
+
+        ];
+        return view('series.index')->with('series', $series);
+
     }
 
     /**
