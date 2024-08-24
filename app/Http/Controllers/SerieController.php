@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Serie;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Echo_;
 
@@ -10,14 +11,9 @@ class SerieController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $series = [
-            'Loki',
-            "House",
-            "Punish"
-
-        ];
+        $series = Serie::all();
         return view('series.index')->with('series', $series);
 
     }
@@ -35,7 +31,10 @@ class SerieController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $serie = new Serie();
+        $serie->name = $request->input('name');
+        $serie->save();
+        return redirect('/series');
     }
 
     /**
