@@ -48,6 +48,8 @@ class SerieController extends Controller
 
     public function destroy(string $id)
     {
-        //
+        Serie::destroy($id);
+        return redirect('/series');
+
     }
 }
