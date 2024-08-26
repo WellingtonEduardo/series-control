@@ -13,8 +13,8 @@ class SerieController extends Controller
         $series = Serie::all();
         $message = $request->session()->get('message');
         return view('series.index')
-                ->with('series', $series)
-                ->with('message', $message);
+            ->with('series', $series)
+            ->with('message', $message);
 
 
     }
@@ -27,8 +27,8 @@ class SerieController extends Controller
     public function store(Request $request)
     {
         $serie = Serie::create($request->all());
-        $request->session()->flash('message', "Serie {$serie->name} com sucesso!");
-        return redirect('/series');
+        return redirect('/series')
+            ->with('message', "Serie {$serie->name} criada com sucesso!");
     }
 
     public function show(string $id)
@@ -51,9 +51,10 @@ class SerieController extends Controller
     public function destroy(Request $request, Serie $series)
     {
         $series->delete();
-        $request->session()->flash('message', "Serie {$series->name} deletada com sucesso!");
 
-        return redirect('/series');
+        return redirect('/series')
+            ->with('message', "Serie {$series->name} deletada com sucesso!");
+        ;
 
     }
 }
