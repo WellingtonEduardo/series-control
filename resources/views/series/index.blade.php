@@ -1,6 +1,12 @@
 <x-layout title="Séries">
     <a href="/series/create" class="btn btn-primary mb-2">Adicionar</a>
 
+    @isset($message)
+        <div class="alert alert alert-success" role="alert">
+            {{ $message }}
+        </div>
+    @endisset
+
     <ul class="list-group">
         @foreach ($series as $serie)
             <li class="list-group-item d-flex justify-content-between align-item-center">

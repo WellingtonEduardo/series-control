@@ -8,13 +8,14 @@ use PhpParser\Node\Stmt\Echo_;
 
 class SerieController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
         $series = Serie::all();
-        return view('series.index')->with('series', $series);
+        $message = $request->session()->get('message');
+        return view('series.index')
+                ->with('series', $series)
+                ->with('message', $message);
+
 
     }
 
@@ -26,6 +27,7 @@ class SerieController extends Controller
     public function store(Request $request)
     {
         Serie::create($request->all());
+        $request->session()->flash('message', 'Serie criada com sucesso!');
         return redirect('/series');
     }
 
@@ -46,9 +48,11 @@ class SerieController extends Controller
     }
 
 
-    public function destroy(string $id)
+    public function destroy(Request $request, string $id)
     {
         Serie::destroy($id);
+        $request->session()->flash('message', 'Serie deletada com sucesso!');
+
         return redirect('/series');
 
     }
