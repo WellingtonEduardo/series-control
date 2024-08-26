@@ -26,8 +26,8 @@ class SerieController extends Controller
 
     public function store(Request $request)
     {
-        Serie::create($request->all());
-        $request->session()->flash('message', 'Serie criada com sucesso!');
+        $serie = Serie::create($request->all());
+        $request->session()->flash('message', "Serie {$serie->name} com sucesso!");
         return redirect('/series');
     }
 
@@ -48,10 +48,10 @@ class SerieController extends Controller
     }
 
 
-    public function destroy(Request $request, string $id)
+    public function destroy(Request $request, Serie $series)
     {
-        Serie::destroy($id);
-        $request->session()->flash('message', 'Serie deletada com sucesso!');
+        $series->delete();
+        $request->session()->flash('message', "Serie {$series->name} deletada com sucesso!");
 
         return redirect('/series');
 
