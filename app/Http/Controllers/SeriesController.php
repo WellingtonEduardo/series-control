@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SeriesFormRequest;
-use App\Models\Serie;
+use App\Models\Series;
 use Illuminate\Http\Request;
 
-class SerieController extends Controller
+class SeriesController extends Controller
 {
     public function index(Request $request)
     {
-        $series = Serie::all();
+        $series = Series::all();
         $message = $request->session()->get('message');
         return view('series.index')
             ->with('series', $series)
@@ -26,9 +26,9 @@ class SerieController extends Controller
 
     public function store(SeriesFormRequest $request)
     {
-        $serie = Serie::create($request->all());
+        $series = Series::create($request->all());
         return redirect('/series')
-            ->with('message', "Serie {$serie->name} criada com sucesso!");
+            ->with('message', "Series {$series->name} criada com sucesso!");
     }
 
     public function show(string $id)
@@ -36,7 +36,7 @@ class SerieController extends Controller
         //
     }
 
-    public function edit(Serie $series)
+    public function edit(Series $series)
     {
 
         return view('series.edit')
@@ -44,22 +44,22 @@ class SerieController extends Controller
     }
 
 
-    public function update(SeriesFormRequest $request, Serie $series)
+    public function update(SeriesFormRequest $request, Series $series)
     {
 
         $series->fill($request->all());
         $series->save();
         return redirect('/series')
-        ->with('message', "Serie {$request->name} editada com sucesso!");
+        ->with('message', "Series {$request->name} editada com sucesso!");
     }
 
 
-    public function destroy(Serie $series)
+    public function destroy(Series $series)
     {
         $series->delete();
 
         return redirect('/series')
-            ->with('message', "Serie {$series->name} deletada com sucesso!");
+            ->with('message', "Series {$series->name} deletada com sucesso!");
 
 
     }
