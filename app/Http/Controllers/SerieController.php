@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Serie;
 use Illuminate\Http\Request;
-use PhpParser\Node\Stmt\Echo_;
 
 class SerieController extends Controller
 {
@@ -36,25 +35,31 @@ class SerieController extends Controller
         //
     }
 
-    public function edit(string $id)
+    public function edit(Serie $series)
     {
-        //
+
+        return view('series.edit')
+            ->with('series', $series);
     }
 
 
-    public function update(Request $request, string $id)
+    public function update(Request $request, Serie $series)
     {
-        //
+
+        $series->fill($request->all());
+        $series->save();
+        return redirect('/series')
+        ->with('message', "Serie {$request->name} editada com sucesso!");
     }
 
 
-    public function destroy(Request $request, Serie $series)
+    public function destroy(Serie $series)
     {
         $series->delete();
 
         return redirect('/series')
             ->with('message', "Serie {$series->name} deletada com sucesso!");
-        ;
+
 
     }
 }
