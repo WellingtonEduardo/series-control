@@ -1,7 +1,7 @@
 <x-layout title="editar Série">
     <form action="/series/{{ $series->id }}" method="post">
         @csrf
-
+        @method('PUT')
         <div class="row mb-3">
             <div class="col-8">
                 <label for="name" class="form-label">Nome:</label>
