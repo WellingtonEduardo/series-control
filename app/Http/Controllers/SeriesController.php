@@ -73,59 +73,61 @@ class SeriesController extends Controller
         // Atualiza os dados da série
         $series->update($request->all());
 
-        // Atualiza as temporadas existentes ou cria novas se necessário
-        $seasons = [];
-        for ($i = 1; $i <= $request->seasonsQty; $i++) {
-            $season = $series->seasons()->where('number', $i)->first();
+        // Busca todas as temporadas existentes junto com os episódios, em uma única consulta
+        $existingSeasons = $series->seasons()->with('episodes')->get()->keyBy('number');
 
-            if ($season) {
-                // Temporada já existe, pode ser atualizado se necessário
-            } else {
-                // Criar nova temporada se não existir
-                $seasons[] = [
-                    'series_id' => $series->id,  // Certifique-se de passar o ID correto
+        // Lista para novas temporadas e novos episódios
+        $newSeasons = [];
+        $newEpisodes = [];
+
+        // Atualiza ou cria temporadas e episódios
+        for ($i = 1; $i <= $request->seasonsQty; $i++) {
+            $season = $existingSeasons->get($i);
+
+            if (!$season) {
+                // Se a temporada não existe, cria uma nova
+                $newSeasons[] = [
+                    'series_id' => $series->id,
                     'number' => $i,
                 ];
-            }
-        }
+            } else {
+                // Se a temporada já existe, atualiza ou cria os episódios
+                $existingEpisodes = $season->episodes->keyBy('number');
 
-        // Inserir novas temporadas, se houver
-        if (!empty($seasons)) {
-            Season::insert($seasons);
-        }
-
-        // Atualiza os episódios existentes ou cria novos se necessário
-        $episodes = [];
-        foreach ($series->seasons as $season) {
-            for ($j = 1; $j <= $request->episodesPerSeason; $j++) {
-                $episode = $season->episodes()->where('number', $j)->first();
-
-                if ($episode) {
-                    // Episódio já existe, pode ser atualizado se necessário
-                } else {
-                    // Criar novo episódio se não existir
-                    $episodes[] = [
-                        'season_id' => $season->id,  // Certifique-se de passar o ID correto
-                        'number' => $j,
-                    ];
+                for ($j = 1; $j <= $request->episodesPerSeason; $j++) {
+                    if (!$existingEpisodes->has($j)) {
+                        // Criar novo episódio se não existir
+                        $newEpisodes[] = [
+                            'season_id' => $season->id,
+                            'number' => $j,
+                        ];
+                    }
                 }
             }
         }
 
-        // Inserir novos episódios, se houver
-        if (!empty($episodes)) {
-            Episode::insert($episodes);
+        // Inserir novas temporadas e episódios em um único comando
+        if (!empty($newSeasons)) {
+            Season::insert($newSeasons);
         }
 
-        // Remover temporadas e episódios se a quantidade foi reduzida
+        if (!empty($newEpisodes)) {
+            Episode::insert($newEpisodes);
+        }
+
+        // Remover temporadas que excedem a quantidade desejada
         $series->seasons()->where('number', '>', $request->seasonsQty)->delete();
-        foreach ($series->seasons as $season) {
-            $season->episodes()->where('number', '>', $request->episodesPerSeason)->delete();
-        }
 
-        return to_route('series.index')
+        // Remover episódios que excedem a quantidade desejada por temporada, em uma única consulta
+        Episode::whereIn('season_id', $series->seasons->pluck('id'))
+            ->where('number', '>', $request->episodesPerSeason)
+            ->delete();
+
+        return redirect('/series')
             ->with('message', "Série '{$series->nome}' atualizada com sucesso");
     }
+
+
 
 
 
