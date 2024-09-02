@@ -33,7 +33,7 @@ class SeriesController extends Controller
     {
         $series = $this->seriesRepository->store($request);
         return to_route('series.index')
-            ->with('message', "Série '{$series->nome}' adicionada com sucesso");
+            ->with('message', "Série {$series->name} adicionada com sucesso");
     }
 
     public function show(string $id)
@@ -43,6 +43,7 @@ class SeriesController extends Controller
 
     public function edit(Series $series)
     {
+
         return view('series.edit')
             ->with('series', $series);
     }
@@ -52,7 +53,7 @@ class SeriesController extends Controller
     {
         $this->seriesRepository->update($request, $series);
         return redirect('/series')
-            ->with('message', "Série '{$series->nome}' atualizada com sucesso");
+            ->with('message', "Série {$series->name} atualizada com sucesso");
     }
 
 

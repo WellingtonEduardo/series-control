@@ -12,13 +12,13 @@
             <div class="col-2">
                 <label for="seasonsQty" class="form-label">Nº Temporadas:</label>
                 <input type="text" id="seasonsQty" name="seasonsQty" class="form-control"
-                    value="{{ old('seasonsQty') }}">
+                    value="{{ $series->seasonsQty }}">
             </div>
 
             <div class="col-2">
                 <label for="episodesPerSeason" class="form-label">Eps / Temporada:</label>
                 <input type="text" id="episodesPerSeason" name="episodesPerSeason" class="form-control"
-                    value="{{ old('episodesPerSeason') }}">
+                    value="{{ $series->episodesPerSeason }}">
             </div>
         </div>
 

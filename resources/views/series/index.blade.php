@@ -1,11 +1,5 @@
-<x-layout title="Séries">
+<x-layout title="Séries" message="{{ $message }}">
     <a href="/series/create" class="btn btn-primary mb-2">Adicionar</a>
-
-    @isset($message)
-        <div class="alert alert alert-success" role="alert">
-            {{ $message }}
-        </div>
-    @endisset
 
     <ul class="list-group">
         @foreach ($series as $serie)
