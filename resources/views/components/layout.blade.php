@@ -23,7 +23,7 @@
 
     @guest
 
-        <form action="{{ route('login') }}" method="post">
+        <form action="{{ route('login') }}" method="get">
             @csrf
             <button class="btn btn-link">
                 Entrar
