@@ -3,13 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Events\SeriesCreated;
-use App\Http\Middleware\Authentication;
 use App\Http\Requests\SeriesFormRequest;
 use App\Models\Series;
-use App\Models\User;
 use App\Repositories\SeriesRepository;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 class SeriesController extends Controller
 {
@@ -34,6 +31,8 @@ class SeriesController extends Controller
 
     public function store(SeriesFormRequest $request)
     {
+        $coverPath = $request->file('cover')?->store('series-path', 'public');
+        $request->cover = $coverPath;
         $series = $this->seriesRepository->store($request);
         SeriesCreated::dispatch($request->name);
 

@@ -12,24 +12,27 @@
 </head>
 
 <body class="text-bg-dark">
-    @auth
-        <form action="{{ route('logout') }}" method="post">
-            @csrf
-            <button class="btn btn-link">
-                Sair
-            </button>
-        </form>
-    @endauth
+    <div class="d-flex justify-content-between align-items-center m-5">
+        <a href="/series">Home</a>
+        @auth
+            <form action="{{ route('logout') }}" method="post">
+                @csrf
+                <button class="btn btn-link">
+                    Sair
+                </button>
+            </form>
+        @endauth
 
-    @guest
+        @guest
 
-        <form action="{{ route('login') }}" method="get">
-            @csrf
-            <button class="btn btn-link">
-                Entrar
-            </button>
-        </form>
-    @endguest
+            <form action="{{ route('login') }}" method="get">
+                @csrf
+                <button class="btn btn-link">
+                    Entrar
+                </button>
+            </form>
+        @endguest
+    </div>
 
     <div class="container">
         <h1>{{ $title }}</h1>

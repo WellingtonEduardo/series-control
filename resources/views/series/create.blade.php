@@ -1,5 +1,5 @@
 <x-layout title="Nova Série">
-    <form action="/series" method="post">
+    <form action="/series" method="post" enctype="multipart/form-data">
         @csrf
 
         <div class="row mb-3">
@@ -21,6 +21,8 @@
                     value="{{ old('episodesPerSeason') }}">
             </div>
         </div>
+
+        <input type="file" name="cover">
 
         <button type="submit" class="btn btn-primary">Adicionar</button>
     </form>

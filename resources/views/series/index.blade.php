@@ -12,10 +12,13 @@
     <ul class="list-group">
         @foreach ($series as $serie)
             <li class="list-group-item d-flex justify-content-between align-item-center">
-                @auth <a href="/series/{{ $serie->id }}/seasons"> @endauth
-                    {{ $serie->name }}
-                    @auth </a> @endauth
-
+                <div class="d-flex align-items-center">
+                    <img class="me-3" src="{{ asset('storage/' . $serie->cover) }}" width="100" class="img-thumbnail"
+                        alt="">
+                    @auth <a href="/series/{{ $serie->id }}/seasons"> @endauth
+                        {{ $serie->name }}
+                        @auth </a> @endauth
+                </div>
                 @auth
                     <span class="d-flex">
 
