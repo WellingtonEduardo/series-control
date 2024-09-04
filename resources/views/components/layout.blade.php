@@ -12,13 +12,24 @@
 </head>
 
 <body class="text-bg-dark">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{{ route('series.index') }}">Home</a>
+    @auth
+        <form action="{{ route('logout') }}" method="post">
+            @csrf
+            <button class="btn btn-link">
+                Sair
+            </button>
+        </form>
+    @endauth
 
-            <a href="{{ route('logout') }}">Sair</a>
-        </div>
-    </nav>
+    @guest
+
+        <form action="{{ route('login') }}" method="post">
+            @csrf
+            <button class="btn btn-link">
+                Entrar
+            </button>
+        </form>
+    @endguest
 
     <div class="container">
         <h1>{{ $title }}</h1>
